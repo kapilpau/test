@@ -1,0 +1,55 @@
+$integration: 'http://ibm.com/appconnect/integration/v2/integrationFile'
+integration:
+  type: api
+  trigger-interfaces:
+    trigger-interface-1:
+      triggers:
+        retrieveTest:
+          assembly:
+            $ref: '#/integration/assemblies/assembly-1'
+          input-context:
+            data: test
+          output-context:
+            data: test
+      options:
+        resources:
+          - business-object: test
+            model:
+              $ref: '#/models/test'
+            triggers:
+              retrieve: retrieveTest
+      type: api-trigger
+  action-interfaces: {}
+  assemblies:
+    assembly-1:
+      assembly:
+        execute:
+          - response:
+              name: response-1
+              reply-maps:
+                - title: test successfully retrieved
+                  status-code: '200'
+                  map:
+                    $map: 'http://ibm.com/appconnect/map/v1'
+                    input:
+                      - variable: api
+                        $ref: '#/trigger/api/parameters'
+                    mappings:
+                      - data:
+                          template: '{{$uppercase($api.data )}}'
+                  input:
+                    - variable: api
+                      $ref: '#/trigger/api/parameters'
+  name: SimpleAPITest
+models:
+  test:
+    name: test
+    properties:
+      data:
+        required: false
+        id: true
+        type: string
+    plural: test
+    description: ' '
+    operations:
+      retrieve: '#/integration/assemblies/assembly-1'

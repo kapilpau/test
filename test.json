@@ -2,7 +2,7 @@
   "$id": "https://example.com/person.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "title": "Persona",
+  "title": "Person",
   "description": "Fields to describe a person",
   "properties": {
     "firstName": {
